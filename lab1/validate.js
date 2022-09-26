@@ -5,10 +5,10 @@ let x, y, r;
 function editXMessage(display, message) {
 	let msg = document.getElementById("x_message");
 	if (display) {
-		msg.style.display = "block";
 		msg.innerHTML = message;
+		msg.style.opacity = "1";
 	} else {
-		msg.style.display = "none";
+		msg.style.opacity = "0";
 	}
 }
 
@@ -38,7 +38,7 @@ function validateX() {
 
 function hideYMessage() {
 	let msg = document.getElementById("y_message");
-	msg.style.display = "none";
+	msg.style.opacity = "0";
 }
 
 function chooseY(elem) {

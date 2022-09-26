@@ -70,8 +70,16 @@ header {
 	opacity: 1;
 }
 
+#pg1_main  {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
 #pg1_main > .column {
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
 }
 
 .pg1_container {
@@ -79,6 +87,8 @@ header {
 	border-radius: 5px;
 	border: 2px solid rgba(179, 38, 56, 0.8);
 	padding: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 #header_button {
@@ -91,19 +101,21 @@ header {
 }
 
 #graph {
-	width: 25%;
+	float: right;
 }
 
-#input_block {
+#input_block, #input_info {
 	width: 30%;
-}
-
-#input_info {
-	width: 25%;
 }
 
 .y_button.active {
 	background-color: red;
+}
+
+.warning {
+	color: #b32638;
+	font-size: 15px;
+	margin: 3px 0 3px 0;
 }
 
 #invalid_request_warning {
@@ -117,10 +129,12 @@ header {
 	border-radius: 50%;
 	border: 1px solid white;
 	color: black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .next_page_link > a {
-	vertical-align: middle;
 	text-decoration: none;
 	color:  #b32638;
 }
