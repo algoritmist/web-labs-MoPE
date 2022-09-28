@@ -7,7 +7,8 @@ body {
 	scroll-behavior: smooth;
 	background: linear-gradient(-30deg, #fb928e, #FEE5B3);
 	text-align: center;
-	font-size: 25px;
+	font-max-size: 25px;
+	font-min-size: 20px;
 	font-family: "Consolas", monospace;
 	color: #000000;
 }
@@ -106,10 +107,18 @@ header {
 
 #input_block, #input_info {
 	width: 30%;
+	padding: 10px;
+}
+
+.y_button {
+	background-color: rgba(0, 0, 0, 0.05);
+	border: 1px solid rgba(179, 38, 56, 0.8);
+	width: 30px;
+	border-radius: 3px;
 }
 
 .y_button.active {
-	background-color: red;
+	background-color: rgba(0, 0, 0, 0.15);
 }
 
 .warning {
