@@ -1,6 +1,8 @@
 <?php
 	session_start();
 
+	$start = microtime(true);
+
 	function validateX($val) {
 		if (!isset($val)) {
 			return false;
@@ -55,14 +57,18 @@
 
 	if (validateInput($x, $y, $r)) {
 		$result = check($x, $y, $r) ? 1 : 0;
-		array_unshift($_SESSION['attempt_history'], array(
-			"x" => $x,
-			"y" => $y,
-			"r" => $r,
-			"result" => $result,
-		));
-
-		$response = array("x" => $x, "y" => $y, "r" => $r, "result" => $result);
+	    $end = microtime(true);
+	    $cur_time = date('d-m-y h:i:s');
+	    $exec_time = round(($end - $start) * 1000, 6, PHP_ROUND_HALF_UP) . " ms";
+	    $response = array(
+	        "x" => $x,
+	        "y" => $y,
+	        "r" => $r,
+	        "result" => $result,
+	        "cur_time" => $cur_time,
+	        "exec_time" => $exec_time,
+	        );
+		array_unshift($_SESSION['attempt_history'], $response);
 		echo json_encode($response);
 	} else  {
 		$result = -1;

@@ -6,14 +6,15 @@ function editXMessage(display, message) {
 	let msg = document.getElementById("x_message");
 	if (display) {
 		msg.innerHTML = message;
-		msg.style.opacity = "1";
+		msg.style.display = "block";
 	} else {
-		msg.style.opacity = "0";
+		msg.style.display = "none";
 	}
 }
 
 function validateX() {
 	x = document.getElementById("x").value;
+	x = x.replace(',', '.');
 	if (x === "") {
 		editXMessage(true, "X is not set!");
 		return false;
@@ -22,9 +23,8 @@ function validateX() {
 		editXMessage(true, "X is not a number!");
 		return false;
 	}
-	if ((parseFloat(x) === 5 && x.charAt(0) !== "5") ||
-		(parseFloat(x) === -5 && x.charAt(1) !== "5")) {
-		editXMessage(true, "X is too precise!");
+	if (x.length > 17) {
+		editXMessage(true, "X is too long! This page doesn't support long numbers.");
 		return false;
 	}
 	x = parseFloat(x);
@@ -38,7 +38,7 @@ function validateX() {
 
 function hideYMessage() {
 	let msg = document.getElementById("y_message");
-	msg.style.opacity = "0";
+	msg.style.display = "none";
 }
 
 function chooseY(elem) {
@@ -76,7 +76,6 @@ function showInvalidRequestWarning(show, message) {
 
 function submit() {
 	if (validateArgs()) {
-		alert("args are valid !");
 		let xhr = new XMLHttpRequest();
 		let data = new FormData();
 		data.append("x", x);
@@ -94,6 +93,8 @@ function submit() {
 					new_row += "<td>" + res.y + "</td>";
 					new_row += "<td>" + res.r + "</td>";
 					new_row += "<td>" + (res.result === 1 ? 'hit' : 'miss') + "</td>";
+					new_row += "<td>" + res["cur_time"] + "</td>";
+					new_row += "<td>" + res["exec_time"] + "</td>";
 					new_row += "</tr>";
 					$(new_row).insertAfter("#results_table .header");
 					break;
@@ -116,5 +117,5 @@ function submit() {
 	}
 	else showInvalidRequestWarning(
 		true,
-		"X, Y or R value doesn't meet their requirements (listed above).");
+		"X, Y and/or R value is not set or doesn't meet their requirements (listed above).");
 }

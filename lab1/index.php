@@ -16,7 +16,7 @@
 <body>
     <div class="page">
 	    <header>
-		    <input type="button" class="header_button" value ="&equiv; info" onclick="changeInfoDisplay()">
+	        <button class="header_button"onclick="changeInfoDisplay()">&equiv; info</button>
 		    <div id="header_info">
 			    evgenia ryzhova, p32132<br>
 			    lab 1, task #3315</br>
@@ -26,13 +26,13 @@
 
         <div id="pg1_main">
             <div class="column">
-	            <div class="pg1_container" id="graph">
+	            <div class="info_container" id="graph">
 		            <img src="images\area.png">
 	            </div>
 	        </div>
 
             <div class="column">
-	            <div class="pg1_container" id="input_block">
+	            <div class="info_container" id="input_block">
 		            <div>
 			            <label for="x">X:</label>
   			            <input type="text" id="x" name="x" oninput="validateX()">
@@ -69,51 +69,53 @@
 				            <option value="5">5</option>
 			            </select>
 		            </div>
-  		            <input type="submit" value="Submit" onclick="submit()">
+  		            <input class="submit_button" type="submit" value="Send" onclick="submit()">
 	            </div>
 
-	            <div class="pg1_container" id="input_info">
+	            <div class="info_container" id="input_info">
 		            <div>
 			            X must be a number between -5 and 5 (non-inclusive),
 			            Y must be an integer between -5 and 3 (inclusive),
 			            R must be an integer between 1 and 5 (inclusive).
 		            </div>
-		            <div class="warning" id="invalid_request_warning">
-		                Placeholder for error message.
-		            </div>
+		            <div class="warning" id="invalid_request_warning"></div>
 	            </div>
 	        </div>
 	    </div>
 
-	    <div class="next_page_link">
+	    <!--<div class="next_page_link">
 		    <a href="#result_wrapper">&darr;</a>
-	    </div>
+	    </div>-->
     </div>
 
 	
 
-	<div class="page">
-		<div id="result_wrapper">
-			<table id="results_table">
-			    <tr class="header">
-					<td>X</td>
-					<td>Y</td>
-					<td>R</td>
-					<td>Result</td>
-				</tr>
-				<?php
-					foreach ($_SESSION["attempt_history"] as $attempt) {
-				?>
-				<tr class=<?php echo $attempt["result"] === 1 ? "hit" : "miss"; ?> >
-					<td><?=$attempt["x"]?></td>
-					<td><?=$attempt["y"]?></td>
-					<td><?=$attempt["r"]?></td>
-					<td><?php echo $attempt["result"] === 1? 'hit' : 'miss' ?></td>
-				</tr>
-				<?php 
-			}?>
-			</table>
-		</div>
+<div>
+	<div id="result_wrapper">
+		<table id="results_table">
+			 <tr class="header">
+				<td>X</td>
+				<td>Y</td>
+				<td>R</td>
+				<td>Result</td>
+				<td>Current time</td>
+				<td>Execution time</td>
+			</tr>
+			<?php
+				foreach ($_SESSION["attempt_history"] as $attempt) {
+			?>
+			<tr class=<?php echo $attempt["result"] === 1 ? "hit" : "miss"; ?> >
+				<td><?=$attempt["x"]?></td>
+				<td><?=$attempt["y"]?></td>
+				<td><?=$attempt["r"]?></td>
+				<td><?php echo $attempt["result"] === 1? 'hit' : 'miss' ?></td>
+				<td><?=$attempt["cur_time"]?></td>
+				<td><?=$attempt["exec_time"]?></td>
+			</tr>
+			<?php
+		}?>
+		</table>
+	</div>
 	</div>
 
 	<script type="text/javascript" src="validate.js"></script>
