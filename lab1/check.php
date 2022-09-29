@@ -2,6 +2,7 @@
 	session_start();
 
 	$start = microtime(true);
+	date_default_timezone_set('Europe/Moscow');
 
 	function validateX($val) {
 		if (!isset($val)) {
