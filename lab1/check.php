@@ -8,7 +8,6 @@
 		if (!isset($val)) {
 			return false;
 		}
-		$val = str_replace(',', '.', $val);
 		return is_numeric($val) && $val < 5 && $val > -5;
 	}
 
@@ -16,8 +15,6 @@
 	    $y_valid_values = range(-5, 3);
 		if(!isset($val)) {
 			return false;
-		} elseif (is_array($val)) {
-			return false; // TODO handle
 		} else {
 			return in_array($val, $y_valid_values);
 		}
@@ -27,8 +24,6 @@
 	    $r_valid_values = range(1, 5);
 		if (!isset($val)) {
 			return false;
-		} elseif (is_array($val)) {
-			return false; // TODO handle
 		} else {
 			return in_array($val, $r_valid_values);
 		}
