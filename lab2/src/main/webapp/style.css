@@ -109,12 +109,8 @@ input[type="button"], input[type="submit"], button {
 	margin: 7px 0 7px 0;
 }
 
-label {
+label.var_name {
 	font-weight: bold;
-}
-
-#x {
-	width: 70px;
 }
 
 .y_button {
@@ -192,6 +188,10 @@ td {
 	height: 30px;
 	min-height: 25px;
 	min-width: 12.5%;
+}
+
+tr {
+	text-align: center;
 }
 
 tr.hit {

@@ -1,4 +1,4 @@
-package main.java.app.assets;
+package app.data;
 
 public class PointValidator {
     private final double X_MIN;

@@ -1,31 +1,13 @@
-package main.java.app.data;
+package app.data;
 
-public class Point {
-    private final double x;
-    private final double y;
-    private final double r;
-    private final boolean result;
-
-    public Point(double x, double y, double r, boolean result) {
-        this.r = r;
-        this.x = x;
-        this.y = y;
-        this.result = result;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getR() {
-        return r;
-    }
-
-    public boolean getResult() {
-        return result;
-    }
+public record Point(double x, double y, double r, boolean result) {
+    /*
+    public String toTableRow() {
+        return "<tr>" +
+                "<td>" + this.x + "</td>" +
+                "<td>" + this.y + "</td>" +
+                "<td>" + this.r + "</td>" +
+                "<td>" + this.result + "</td>" +
+                "</tr>";
+    } //todo mvc*/
 }

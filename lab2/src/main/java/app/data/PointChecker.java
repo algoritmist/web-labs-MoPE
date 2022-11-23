@@ -1,6 +1,6 @@
-package main.java.app.assets;
+package app.data;
 
-public final class PointChecker {
+public class PointChecker {
     private boolean checkFirstQuarter(double x, double y, double r) {
         if (x < 0 || y < 0) return false;
         return (x + y <= r/2);
