@@ -21,7 +21,7 @@ public class JsonPointWriter implements PointWriter{
         try {
             return mapper.writeValueAsString(points);
         } catch (JsonProcessingException e) {
-            return e.getMessage(); // "[]" todo
+            return "[]";
         }
     }
 }

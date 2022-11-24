@@ -46,12 +46,13 @@ function displayWarning(warning_id, display) {
 function validateX() {
 	let x = document.querySelectorAll('input.x_checkbox:checked');
 	displayWarning("x_warning", (x.length === 0));
+	return (x.length !== 0);
 }
 
 function validateR() {
-	let r = document.querySelector('input[name="r"]:checked').value;
-	displayWarning("r_warning", (typeof r === "undefined"));
-	return (typeof r !== "undefined");
+	let r = document.querySelector('input[name="r"]:checked');
+	displayWarning("r_warning", (r == null));
+	return r != null;
 }
 
 function validateArgs() {
@@ -68,7 +69,7 @@ function showInvalidRequestWarning(show, message) {
 	}
 }
 
-function submit() {
+function submitForm() {
 	if (validateArgs()) {
 		document.forms["input_block"].submit();
 	}

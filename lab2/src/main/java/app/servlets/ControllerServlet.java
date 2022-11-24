@@ -18,12 +18,8 @@ public class ControllerServlet extends HttpServlet {
             req.getRequestDispatcher("../check").forward(req, resp);
         }
         else {
-            if (true) {
-                //todo
-                resp.getWriter().println("shadow realm reached");
-            } else {
-                resp.sendError(404);
-            }
+            resp.setStatus(404);
+            req.getRequestDispatcher("result.jsp").forward(req, resp);
         }
     }
 }

@@ -26,8 +26,8 @@
     <div class="info_container" >
         <%= responseMessageMap.getMessage(response.getStatus()) %>
     </div>
-    <div id="result_wrapper">
-        <table id="results_table">
+    <div id="result_wrapper" style=<%=response.getStatus() / 100 == 2 ? "display:block" : "display:none" %>>
+        <table id="results_table" >
             <tr class="header">
                 <td>X</td>
                 <td>Y</td>
@@ -46,6 +46,12 @@
             %>
         </table>
     </div>
+
+    <div class="info_container" style=
+        <%=responseMessageMap.getCat(response.getStatus()) != null ? "display:block" : "display:none"%>>
+            <img src=<%=responseMessageMap.getCat(response.getStatus())%>>
+    </div>
+
     <div class="next_page_link">
         <a href="${pageContext.request.contextPath}">&larr;</a>
     </div>

@@ -87,7 +87,7 @@
 						<div id="r_warning" class="warning">R is not  set!</div>
 					</div>
 
-  		            <input class="submit_button" type="submit" value="Send" onclick="submit()">
+  		            <input class="submit_button" type="button" value="Send" onclick="submitForm()">
 	            </form>
 
 	            <div class="info_container" id="input_info">
