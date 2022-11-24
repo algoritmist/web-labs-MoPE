@@ -24,7 +24,7 @@ div {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
- }
+}
 
 header {
 	padding-bottom: 15px;
@@ -96,6 +96,11 @@ input[type="button"], input[type="submit"], button {
 	float: right;
 }
 
+#graph_canvas {
+	width: 220px;
+	height: 220px;
+}
+
 #input_block, #input_info {
 	min-width: 30%;
 	padding: 10px;
@@ -162,6 +167,7 @@ label.var_name {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: 10px;
 }
 
 .next_page_link > a {

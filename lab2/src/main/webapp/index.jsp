@@ -4,8 +4,15 @@
 <%@ page import="app.data.Point" %>
 <%@ page import="app.data.HistoryManager" %>
 <%@ page import="app.view.TablePointWriter" %>
+<%@ page import="app.view.JsonPointWriter" %>
 
-<!DOCTYPE HTML PUBLIC>
+<%!
+	private final HistoryManager resultsManager = new HistoryManager();
+	private final TablePointWriter tablePointWriter = new TablePointWriter();
+	private final JsonPointWriter jsonPointWriter = new JsonPointWriter();
+%>
+
+		<!DOCTYPE HTML PUBLIC>
 <html>
 <head>
 	<title>web_lab2</title>
@@ -26,7 +33,8 @@
         <div id="pg1_main">
             <div class="column">
 	            <div class="info_container" id="graph">
-		            <img src="static/area.png" alt="graph">
+		            <!--<img src="static/area.png" alt="graph">-->
+					<canvas id="graph_canvas" width="220" height="220">Interactive graph</canvas>
 	            </div>
 	        </div>
 
@@ -84,9 +92,9 @@
 
 	            <div class="info_container" id="input_info">
 		            <div>
-			            X must be a number between -5 and 5 (non-inclusive),
-			            Y must be an integer between -5 and 3 (inclusive),
-			            R must be an integer between 1 and 5 (inclusive).
+			            X must be an integer between -5 and 3 (inclusive),
+			            Y must be a number between -3 and 5 (non-inclusive),
+			            R must be a number between 1 and 3 (inclusive).
 		            </div>
 		            <div class="warning" id="invalid_request_warning">
 					</div>
@@ -107,11 +115,6 @@
 				<td>Result</td>
 			</tr>
 
-			<%!
-				private final HistoryManager resultsManager = new HistoryManager();
-				private final TablePointWriter tablePointWriter = new TablePointWriter();
-			%>
-
 			<%
 				LinkedList<Point> results = resultsManager.getResults(session);
 				out.println(tablePointWriter.writePoints(results));
@@ -119,8 +122,14 @@
 		</table>
 	</div>
 </div>
+	<script type="text/javascript" src="js/validate.js"></script>
+	<script type="text/javascript" src="js/header.js"></script>
+	<script type="text/javascript" src="js/graph.js"></script>
 
-	<script type="text/javascript" src="validate.js"></script>
-	<script type="text/javascript" src="helpers.js"></script>
+<script>
+	let points = JSON.parse('<%= jsonPointWriter.writePoints(results)%>');
+	drawPoints(points);
+</script>
+
 </body>
 </html>

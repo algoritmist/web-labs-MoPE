@@ -1,7 +1,5 @@
 "use strict";
 
-let x, y, r;
-
 function editYMessage(display, message) {
 	let msg = document.getElementById("y_message");
 	if (display) {
@@ -13,15 +11,12 @@ function editYMessage(display, message) {
 }
 
 function validateY() {
-	y = document.getElementById("y").value;
+	let y = document.getElementById("y").value;
 	y = y.replace(',', '.');
 	if (y === "") {
 		editYMessage(true, "Y is not set!");
 		return false;
 	}
-	console.log(y);
-	console.log(isNaN(y));
-	console.log(y.trim());
 	if (isNaN(y) || y.trim() === "") {
 		editYMessage(true, "Y is not a number!");
 		return false;
@@ -32,7 +27,7 @@ function validateY() {
 	}
 	y = parseFloat(y);
 	if (y <= -3 || y >= 5) {
-		editYMessage(true, "Y must be between -5 and 5!");
+		editYMessage(true, "Y must be between -3 and 5!");
 		return false;
 	}
 	editYMessage(false);
@@ -50,13 +45,12 @@ function displayWarning(warning_id, display) {
 
 function validateX() {
 	let x = document.querySelectorAll('input.x_checkbox:checked');
-	console.log(x.length);
 	displayWarning("x_warning", (x.length === 0));
 }
 
 function validateR() {
-	r = document.querySelector('input[name="r"]:checked').value;
-	displayWarning("r_warning", (typeof r === "underfined"));
+	let r = document.querySelector('input[name="r"]:checked').value;
+	displayWarning("r_warning", (typeof r === "undefined"));
 	return (typeof r !== "undefined");
 }
 

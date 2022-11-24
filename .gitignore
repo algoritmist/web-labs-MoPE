@@ -1,1 +1,4 @@
 */.idea
+wildfly-19
+*/target
+*/lib

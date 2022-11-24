@@ -17,7 +17,7 @@ public class PointChecker {
 
     private boolean checkFourthQuarter(double x, double y, double r) {
         if (x < 0 | y > 0) return false;
-        return (x <= r/2 && y >= r);
+        return (x <= r/2 && y >= -r);
     }
 
     public boolean checkPoint(double x, double y, double r) {

@@ -51,6 +51,6 @@
     </div>
 </div>
 
-    <script type="text/javascript" src="helpers.js"></script>
+    <script type="text/javascript" src="js/header.js"></script>
 </body>
 </html>
