@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -23,10 +24,6 @@ public class AreaCheckServlet extends HttpServlet {
         resp.setStatus(200);
         LinkedList<Point> currentAttempt = new LinkedList<>();
         try {
-            /*
-            Double[] xArray = Arrays.stream(req.getParameterValues("x[]"))
-                    .map(Double::parseDouble)
-                    .toArray(Double[]::new);*/
             String[] xArray = req.getParameterValues("x[]");
             double y = Double.parseDouble(req.getParameter("y"));
             double r = Double.parseDouble(req.getParameter("r"));
@@ -37,7 +34,6 @@ public class AreaCheckServlet extends HttpServlet {
                     if (validator.validatePoint(x, y, r)) {
                         boolean res = checker.checkPoint(x, y, r);
                         Point p = new Point(x, y, r, res);
-                        historyManager.updateResults(req.getSession(), p);
                         currentAttempt.add(p);
                     } else {
                         resp.setStatus(207);
@@ -46,14 +42,28 @@ public class AreaCheckServlet extends HttpServlet {
                     resp.setStatus(207);
                 }
             }
-            lastAttemptManager.updateResults(req.getSession(), currentAttempt);
         } catch (NumberFormatException | NullPointerException e) {
             resp.setStatus(207);
         }
-        lastAttemptManager.updateResults(req.getSession(), currentAttempt);
         if (currentAttempt.isEmpty()) {
             resp.setStatus(400);
         }
-        req.getRequestDispatcher("result.jsp").forward(req, resp);
+        try {
+            long startTime = Long.parseLong(req.getAttribute("start_time").toString());
+            long endTime = System.nanoTime();
+            long curTime = System.currentTimeMillis();
+
+            for (Point p: currentAttempt) {
+                p.setCurTime(new Timestamp(curTime));
+                p.setExTime(endTime - startTime);
+                historyManager.updateResults(req.getSession(), p);
+            }
+            lastAttemptManager.updateResults(req.getSession(), currentAttempt);
+            req.getRequestDispatcher("result.jsp").forward(req, resp);
+        } catch (NumberFormatException | NullPointerException e) {
+            resp.setStatus(500);
+            resp.getWriter().println(e.getMessage());
+        }
+        //req.getRequestDispatcher("result.jsp").forward(req, resp);
     }
 }

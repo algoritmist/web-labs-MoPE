@@ -10,11 +10,11 @@ public abstract class ResultsManager implements ResultsManagerInterface {
         ATTRIBUTE_NAME = attribute_name;
     }
 
-    public LinkedList<Point> getResults(HttpSession session) {
+    public synchronized LinkedList<Point> getResults(HttpSession session) {
         return getResults(session, ATTRIBUTE_NAME);
     }
 
-    public void updateResults(HttpSession session, LinkedList<Point> results) {
+    public synchronized void updateResults(HttpSession session, LinkedList<Point> results) {
         updateResults(session, results, ATTRIBUTE_NAME);
     }
 }

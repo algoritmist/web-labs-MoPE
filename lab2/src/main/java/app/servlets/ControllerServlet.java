@@ -15,6 +15,7 @@ public class ControllerServlet extends HttpServlet {
         (req.getParameter("x[]") != null &&
         req.getParameter("y") != null &&
         req.getParameter("r") != null) {
+            req.setAttribute("start_time", Long.toString(System.nanoTime()));
             req.getRequestDispatcher("../check").forward(req, resp);
         }
         else {

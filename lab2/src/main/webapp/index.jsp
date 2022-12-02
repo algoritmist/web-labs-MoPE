@@ -18,6 +18,7 @@
 	<title>web_lab2</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css">
+	<link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/icon.png">
 </head>
 <body>
     <div class="page">
@@ -84,6 +85,8 @@
 						<input type="radio" id="r_3" name="r" value="3.0" onclick="validateR()">
 						<label for="r_3">3</label>
 
+                        <!--<input type="hidden" name="time" value="<%-- System.currentTimeMillis() --%>">-->
+
 						<div id="r_warning" class="warning">R is not  set!</div>
 					</div>
 
@@ -109,10 +112,12 @@
 	<div id="result_wrapper">
 		<table id="results_table">
 			 <tr class="header">
-				<td>X</td>
-				<td>Y</td>
-				<td>R</td>
-				<td>Result</td>
+				 <td>X</td>
+				 <td>Y</td>
+				 <td>R</td>
+				 <td>Result</td>
+				 <td>Current time</td>
+				 <td>Execution time</td>
 			</tr>
 
 			<%

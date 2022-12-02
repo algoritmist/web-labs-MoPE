@@ -134,21 +134,11 @@ function getR() {
 }
 
 function getXFromCanvasCoordinates(xCanvasCoord, r) {
-    let xValue = ((xCanvasCoord - 110) * r) / 100;
-    let minOffset = 10;
-    let closestValue = X_VALUE_RIGHT_BORDER;
-    for (let i = 0; i < 9; i++) {
-        if (Math.abs(xValue - (X_VALUE_LEFT_BORDER + i)) < minOffset) {
-            minOffset = Math.abs(xValue - (X_VALUE_LEFT_BORDER + i));
-            closestValue = X_VALUE_LEFT_BORDER + i
-        }
-    }
-    return closestValue;
+    return ((xCanvasCoord - 110) * r) / 100;
 }
 
 function getYFromCanvasCoordinates(yCanvasCoord, r) {
-    let yValue = -((yCanvasCoord - 110) * r) / 100;
-    return (yValue < -3) ? -3 : yValue;
+    return -((yCanvasCoord - 110) * r) / 100;
 }
 
 function getCoordinatesFromMouseClick(event) {
@@ -180,9 +170,15 @@ function drawPoints(points) {
 }
 
 function sendRequest(x, y, r) {
-    let reqBody = "x[]=" + x + "&y=" + y + "&r=" + r;
-    window.location.replace("controller?" + reqBody);
-    // http://127.0.0.1:8080/lab2/127.0.0.1//lab2//controller?x[]=2&y=3.095833587646484&r=2.0
+    const formData = new FormData();
+    formData.append("x[]", x);
+    formData.append("y", y);
+    formData.append("r", r);
+    
+    fetch("/controller", {
+        method: "GET",
+        body: formData
+    }).then(r => {})
 }
 
 function handleClick(event) {

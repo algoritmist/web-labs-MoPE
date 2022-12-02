@@ -11,6 +11,7 @@
     <title>web_lab2</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/images/icon.png">
 </head>
 <body>
 <div class="page">
@@ -33,6 +34,8 @@
                 <td>Y</td>
                 <td>R</td>
                 <td>Result</td>
+                <td>Current time</td>
+                <td>Execution time</td>
             </tr>
 
             <%!
