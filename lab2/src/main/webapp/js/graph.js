@@ -170,15 +170,18 @@ function drawPoints(points) {
 }
 
 function sendRequest(x, y, r) {
-    const formData = new FormData();
-    formData.append("x[]", x);
-    formData.append("y", y);
-    formData.append("r", r);
+    const urlParams = new URLSearchParams();
+    urlParams.append("x[]", x);
+    urlParams.append("y", y);
+    urlParams.append("r", r);
+    const BASE_URL = window.location.href;
     
-    fetch("/controller", {
-        method: "GET",
-        body: formData
-    }).then(r => {})
+    fetch(BASE_URL + "/controller?" + urlParams, {
+        method: "GET"
+    }).then(() => {
+        window.location.replace(BASE_URL + "/result.jsp");
+        }
+    )
 }
 
 function handleClick(event) {
