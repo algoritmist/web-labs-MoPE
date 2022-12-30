@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+<h:head>
+    <title>web_lab3</title>
+    <meta charset="UTF-8"/>
+    <h:outputStylesheet library="css" name="style.css"/>
+
+</h:head>
+<h:body>
+    <div class="page">
+        <header>
+            <button class="header_button" onclick="changeInfoDisplay()">&#8801; info</button>
+            <div id="header_info">
+                <h:outputText value="#{headerInfo.studentInfo}"/><br />
+                <h:outputText value="#{headerInfo.labInfo}"/><br />
+                current time: <span class="datetime"></span>
+            </div>
+        </header>
+
+        <div id="pg1_main">
+            <div class="column">
+                <div class="info_container" id="graph">
+                    <!--<img src="static/area.png" alt="graph">-->
+                    <canvas id="graph_canvas" width="220" height="220">Interactive graph</canvas>
+                </div>
+            </div>
+
+            <div class="column">
+
+                <h:form class="info_container">
+                    <div>
+                        <h:outputLabel value="X" for="XInput" />
+                        <div>
+                            <h:commandLink class="x input_button" name="XInput" value="-2"
+                                           action="#{point.setX(-2)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="-1.5"
+                                           action="#{point.setX(-1.5)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="-1"
+                                           action="#{point.setX(-1)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="-0.5"
+                                           action="#{point.setX(-0.5)}" oncomplete="selectX(this);"/>
+                        </div>
+                        <div>
+                            <h:commandLink class="x input_button" name="XInput" value="0"
+                                           action="#{point.setX(0)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="0.5"
+                                           action="#{point.setX(0.5)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="1"
+                                           action="#{point.setX(1)}" oncomplete="selectX(this);"/>
+                            <h:commandLink class="x input_button" name="XInput" value="1.5"
+                                           action="#{point.setX(1.5)}" oncomplete="selectX(this);"/>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h:outputLabel value="Y" for="YInput" />
+                        <h:inputText id="YInput" value="#{point.y}">
+                                <f:validateRequired>
+                                    <f:validateDoubleRange minimum="-5" maximum="5" />
+                                </f:validateRequired>
+                        </h:inputText>
+                    </div>
+
+                    <div>
+                        <h:outputLabel value="R" for="RInput" />
+                        <div>
+                        <h:commandLink styleClass="r input_button" name="RInput" value="1"
+                                       action="#{point.setR(1)}" oncomplete="selectR(this)"/>
+                        <h:commandLink styleClass="r input_button" name="RInput" value="2"
+                                       action="#{point.setR(2)}" oncomplete="selectR(this)"/>
+                        <h:commandLink styleClass="r input_button" name="RInput" value="3"
+                                       action="#{point.setR(3)}" oncomplete="selectR(this)"/>
+                        <h:commandLink styleClass="r input_button" name="RInput" value="4"
+                                       action="#{point.setR(4)}" oncomplete="selectR(this)"/>
+                        <h:commandLink styleClass="r input_button" name="RInput" value="5"
+                                       action="#{point.setR(5)}" oncomplete="selectR(this)"/>
+                        </div>
+                    </div>
+
+                    <h:commandButton action="" value="Submit" />
+                </h:form>
+
+
+                <div class="info_container" id="input_info">
+                    <div>
+                        X must be an integer between -5 and 3 (inclusive),
+                        Y must be a number between -3 and 5 (non-inclusive),
+                        R must be a number between 1 and 3 (inclusive).
+                    </div>
+                    <div class="warning" id="invalid_request_warning">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <h:link value="&#8656; Start page" outcome="start" />
+    </div>
+
+    <h:outputScript library="js" name="header.js"/>
+    <h:outputScript library="js" name="graph_drawer.js"/>
+    <h:outputScript library="js" name="form.js"/>
+</h:body>
+</html>
