@@ -5,7 +5,6 @@ const ctx  = canvas.getContext("2d");
 
 let x;
 let y;
-let r;
 
 const LEFT_GRAPH_BORDER = 10;
 const RIGHT_GRAPH_BORDER = 210;
@@ -19,6 +18,8 @@ const Y_AXIS_OFFSET = 5;
 
 const X_VALUE_LEFT_BORDER = -5;
 const X_VALUE_RIGHT_BORDER = 3;
+
+const graph_color = "white";
 
 function drawAxis() {
     ctx.beginPath();
@@ -79,19 +80,12 @@ function drawAxis() {
 }
 
 function drawFirstQuarter() {
-    /*
-    ctx.beginPath()
-    ctx.strokeStyle = "grey";
-    ctx.fillStyle = "yellow";
-
-    ctx.stroke();
-    ctx.fill();*/
 }
 
 function drawSecondQuarter() {
     ctx.beginPath();
     ctx.strokeStyle = "grey";
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = graph_color;
 
     ctx.moveTo(X_MIDDLE, Y_MIDDLE)
     ctx.lineTo(X_MIDDLE - R, Y_MIDDLE);
@@ -104,7 +98,7 @@ function drawSecondQuarter() {
 function drawThirdQuarter() {
     ctx.beginPath();
     ctx.strokeStyle = "grey";
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = graph_color;
 
     ctx.moveTo(X_MIDDLE, Y_MIDDLE);
     ctx.lineTo(X_MIDDLE - R/2, Y_MIDDLE);
@@ -118,7 +112,7 @@ function drawThirdQuarter() {
 function drawFourthQuarter() {
     ctx.beginPath();
     ctx.strokeStyle = "grey";
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = graph_color;
 
     ctx.arc(X_MIDDLE, Y_MIDDLE, R/2, 0, Math.PI/2, false);
     ctx.lineTo(X_MIDDLE, Y_MIDDLE);
@@ -136,35 +130,40 @@ function drawGraph() {
     drawAxis();
 }
 
-/*
-
-function getR() {
-    r = document.querySelector('input[name="r"]:checked');
-    r = (r == null) ? undefined : r.value;
-}
-
 function getXFromCanvasCoordinates(xCanvasCoord, r) {
-    return ((xCanvasCoord - 110) * r) / 100;
+    return ((xCanvasCoord - 110) / 100) * r;
 }
 
 function getYFromCanvasCoordinates(yCanvasCoord, r) {
-    return -((yCanvasCoord - 110) * r) / 100;
+    return (-(yCanvasCoord - 110) / 100) * r;
 }
 
 function getCoordinatesFromMouseClick(event) {
     const rect = canvas.getBoundingClientRect();
     x = event.clientX - rect.left;
     y = event.clientY - rect.top;
+    console.log(x, y);
     if (x >= LEFT_GRAPH_BORDER && x <= RIGHT_GRAPH_BORDER && y >= TOP_GRAPH_BORDER && y <= BOTTOM_GRAPH_BORDER && typeof r !== "undefined") {
         x = getXFromCanvasCoordinates(x, r);
         y = getYFromCanvasCoordinates(y, r);
     }
 }
 
-function drawPoint(x, y, r, result) {
+function calculateResult(x, y, r) {
+    return ((x > 0 && y > 0) && false) || ((x <= 0 && y >= 0) && (2*y - x <= r)) ||
+        (x <= 0 && y <= 0 && (x >= -r/2) && (y >= -r)) || ((x >= 0 && y <= 0 && (x*x + y*y <= r/2)));
+}
+
+function drawPoint(x, y, r1, result) {
     // x, y are graph coordinates, not canvas coordinates
-    let xCoord = ((x + r)/ r) * 100 + LEFT_GRAPH_BORDER;
-    let yCoord = 200 - ((y + r) / r) * 100 + TOP_GRAPH_BORDER;
+    console.log(x,y,r1);
+    if (typeof r !== "undefined") {
+        r1 = r;
+    }
+    console.log(x,y,r1);
+    let xCoord = ((x + r1)/ r1) * 100 + LEFT_GRAPH_BORDER;
+    let yCoord = 200 - ((y + r1) / r1) * 100 + TOP_GRAPH_BORDER;
+    result = calculateResult(x, y, r1);
 
     ctx.beginPath()
     ctx.fillStyle = result ? "white" : "black";
@@ -179,31 +178,33 @@ function drawPoints(points) {
     points.forEach(point => drawPoint(point.x, point.y, point.r, point.result));
 }
 
+function redrawPoints(points) {
+    //selectR();
+    if (r !== "undefined") {
+        ctx.clearRect(0, 0, 220, 220);
+        drawGraph();
+        drawPoints(points);
+    }
+}
+
 function sendRequest(x, y, r) {
-    const urlParams = new URLSearchParams();
-    urlParams.append("x[]", x);
-    urlParams.append("y", y);
-    urlParams.append("r", r);
-    const BASE_URL = window.location.href;
-    
-    fetch(BASE_URL + "/controller?" + urlParams, {
-        method: "GET"
-    }).then(() => {
-        window.location.replace(BASE_URL + "/result.jsp");
-        }
-    )
+    let x_field = document.getElementById("main_form:XValue");
+    x_field.setAttribute("value", x);
+    document.getElementById('main_form:YInput').value = y;
+    document.getElementById("main_form:submit").click();
 }
 
 function handleClick(event) {
-    getR();
     if (typeof r === "undefined") {
-        showInvalidRequestWarning(true, "You must set R before interacting with graph");
+        console.log("r undefined")
+        //showInvalidRequestWarning(true, "You must set R before interacting with graph");
     } else {
         getCoordinatesFromMouseClick(event);
+        console.log(x, y, r);
         sendRequest(x, y, r);
     }
-}*/
+}
 
 drawGraph();
 
-//canvas.addEventListener("click", (e) => handleClick(e));
+canvas.addEventListener("click", (e) => handleClick(e));

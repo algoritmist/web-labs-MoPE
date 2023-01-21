@@ -21,12 +21,26 @@
 
     <managed-bean>
         <managed-bean-name>headerInfo</managed-bean-name>
-        <managed-bean-class>com.weblabs.lab3.HeaderBean</managed-bean-class>
+        <managed-bean-class>com.weblabs.lab3.beans.HeaderBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>point</managed-bean-name>
-        <managed-bean-class>com.weblabs.lab3.PointBean</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
+        <managed-bean-class>com.weblabs.lab3.beans.PointBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>results</managed-bean-name>
+        <managed-bean-class>com.weblabs.lab3.beans.ResultsBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>pointBean</property-name>
+            <value>#{point}</value>
+        </managed-property>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>attempt</managed-bean-name>
+        <managed-bean-class>com.weblabs.lab3.beans.AttemptBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>

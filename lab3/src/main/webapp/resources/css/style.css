@@ -118,9 +118,11 @@ label.var_name {
 	padding: 2px;
 	background: none;
 	border: 1px solid rgba(179, 38, 56, 0.8);
-	min-width: 30px;
+	min-width: 45px;
 	border-radius: 3px;
     color:black;
+    margin: 1px 3px 1px 3px;
+    display:inline-block
 }
 
 
@@ -154,14 +156,15 @@ label.var_name {
 	display: none;
 }
 
-.next_page_link {
-	width: 45px;
-	height: 45px;
+.page_link {
+	min-width: 60px;
+	min-height: 45px;
 	background-color: rgba(255, 255, 255, 0.9);
 	border-radius: 50%;
 	border: 1px solid white;
 	color: black;
 	display: flex;
+    text-decoration: none;
 	align-items: center;
 	justify-content: center;
 	margin-top: 10px;
@@ -177,7 +180,7 @@ label.var_name {
 	width: 80%
 }
 
-#result_wrapper table {
+.results_table, .ui-datatable.ui-widget.results_table  {
 	border-collapse: collapse;
 	margin-left: auto;
 	margin-right: auto;

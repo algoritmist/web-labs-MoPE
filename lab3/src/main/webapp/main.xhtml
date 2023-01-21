@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xml:lang="en" lang="en">
 <h:head>
     <title>web_lab3</title>
@@ -23,86 +24,150 @@
 
         <div id="pg1_main">
             <div class="column">
-                <div class="info_container" id="graph">
-                    <!--<img src="static/area.png" alt="graph">-->
+
+                <div class="info_container" id="graph_сontainer">
                     <canvas id="graph_canvas" width="220" height="220">Interactive graph</canvas>
                 </div>
             </div>
 
             <div class="column">
-
-                <h:form class="info_container">
+                <h:form class="info_container" id="main_form">
                     <div>
+                        <h:inputHidden id="XValue" value="#{point.x}"/>
                         <h:outputLabel value="X" for="XInput" />
                         <div>
                             <h:commandLink class="x input_button" name="XInput" value="-2"
-                                           action="#{point.setX(-2)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, -2);"/>
                             <h:commandLink class="x input_button" name="XInput" value="-1.5"
-                                           action="#{point.setX(-1.5)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, -1.5);"/>
                             <h:commandLink class="x input_button" name="XInput" value="-1"
-                                           action="#{point.setX(-1)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, -1);"/>
                             <h:commandLink class="x input_button" name="XInput" value="-0.5"
-                                           action="#{point.setX(-0.5)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, -0.5);"/>
                         </div>
                         <div>
                             <h:commandLink class="x input_button" name="XInput" value="0"
-                                           action="#{point.setX(0)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, 0);"/>
                             <h:commandLink class="x input_button" name="XInput" value="0.5"
-                                           action="#{point.setX(0.5)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, 0.5);"/>
                             <h:commandLink class="x input_button" name="XInput" value="1"
-                                           action="#{point.setX(1)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, 1);"/>
                             <h:commandLink class="x input_button" name="XInput" value="1.5"
-                                           action="#{point.setX(1.5)}" oncomplete="selectX(this);"/>
+                                           onclick="return selectX(this, 1.5);"/>
                         </div>
+                        <div class="warning" id="x_warning" >X is not set!</div>
                     </div>
 
                     <div>
                         <h:outputLabel value="Y" for="YInput" />
-                        <h:inputText id="YInput" value="#{point.y}">
-                                <f:validateRequired>
-                                    <f:validateDoubleRange minimum="-5" maximum="5" />
-                                </f:validateRequired>
+                        <h:inputText id="YInput" value="#{point.y}" maxlength="15" label="Y"
+                                     validatorMessage="Y value must be a float between -5 and 5 (inclusive)!"
+                                     converterMessage="Y value must be a float between -5 and 5 (inclusive)!">
+                            <f:validateDoubleRange minimum="-5" maximum="5" />
+                            <f:validateRequired />
+                            <f:ajax event="keyup" render="y_warning" execute="YInput"/>
                         </h:inputText>
+                        <div><h:message id="y_warning" styleClass="warning" for="YInput"
+                                        showSummary="true" showDetail="false"/></div>
                     </div>
 
                     <div>
+                        <h:inputHidden id="RValue" value="#{point.r}"/>
                         <h:outputLabel value="R" for="RInput" />
                         <div>
-                        <h:commandLink styleClass="r input_button" name="RInput" value="1"
-                                       action="#{point.setR(1)}" oncomplete="selectR(this)"/>
-                        <h:commandLink styleClass="r input_button" name="RInput" value="2"
-                                       action="#{point.setR(2)}" oncomplete="selectR(this)"/>
-                        <h:commandLink styleClass="r input_button" name="RInput" value="3"
-                                       action="#{point.setR(3)}" oncomplete="selectR(this)"/>
-                        <h:commandLink styleClass="r input_button" name="RInput" value="4"
-                                       action="#{point.setR(4)}" oncomplete="selectR(this)"/>
-                        <h:commandLink styleClass="r input_button" name="RInput" value="5"
-                                       action="#{point.setR(5)}" oncomplete="selectR(this)"/>
+                            <h:commandLink styleClass="r input_button" name="RInput" value="1"
+                                           onclick="selectR(this, 1);
+                                           redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+                                           return false;">
+                                <f:ajax event="action" render=":graph"/>
+                            </h:commandLink>
+                            <h:commandLink styleClass="r input_button" name="RInput" value="2"
+                                           onclick="selectR(this, 2);
+                                           redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+                                           return false;">
+                                <f:ajax event="action" render=":graph"/>
+                            </h:commandLink>
+                            <h:commandLink styleClass="r input_button" name="RInput" value="3"
+                                           onclick="selectR(this, 3);
+                                           redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+                                           return false;">
+                                <f:ajax event="action" render=":graph"/>
+                            </h:commandLink>
+                            <h:commandLink styleClass="r input_button" name="RInput" value="4"
+                                           onclick="selectR(this, 4);
+                                           redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+                                           return false;">
+                                <f:ajax event="action" render=":graph"/>
+                            </h:commandLink>
+                            <h:commandLink styleClass="r input_button" name="RInput" value="5"
+                                           onclick="selectR(this, 5);
+                                           redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+                                           return false;">
+                                <f:ajax event="action" render=":graph"/>
+                            </h:commandLink>
                         </div>
                     </div>
+                    <div id="r_warning" class="warning">R is not  set!</div>
 
-                    <h:commandButton action="" value="Submit" />
+                    <h:commandButton value="Submit" id="submit" action="#{results.handleAttempt()}"
+                                     ajax="true" update="results_table @form" styleClass="submit_button">
+                    </h:commandButton>
                 </h:form>
 
 
                 <div class="info_container" id="input_info">
                     <div>
-                        X must be an integer between -5 and 3 (inclusive),
-                        Y must be a number between -3 and 5 (non-inclusive),
-                        R must be a number between 1 and 3 (inclusive).
+                        X must be a number between -2 and 1.5 (inclusive),
+                        Y must be a number between -5 and 5 (inclusive),
+                        R must be a number between 1 and 5 (inclusive).
                     </div>
                     <div class="warning" id="invalid_request_warning">
                     </div>
                 </div>
             </div>
+
         </div>
-
-
-        <h:link value="&#8656; Start page" outcome="start" />
     </div>
+
+    <div id="result_wrapper">
+
+        <p:dataTable id="table" value="#{results.results}" var="attempt" paginator="true"
+                     rows="15" paginatorPosition="bottom" paginatorAlwaysVisible="true" lazy="true"
+                     styleClass="results_table">
+
+
+            <p:column headerText="X">
+                <h:outputText value="#{attempt.x}"/>
+            </p:column>
+            <p:column headerText="Y">
+                <h:outputText value="#{attempt.y}"/>
+            </p:column>
+            <p:column headerText="R">
+                <h:outputText value="#{attempt.r}"/>
+            </p:column>
+            <p:column headerText="Result">
+                <h:outputText value="#{attempt.stringResult}" styleClass="#{attempt.stringResult}"/>
+            </p:column>
+            <p:column headerText="Current time">
+                <h:outputText value="#{attempt.formattedCurrentTime}"/>
+            </p:column>
+            <p:column headerText="Execution time">
+                <h:outputText value="#{attempt.executionTime} ns"/>
+            </p:column>
+        </p:dataTable>
+    </div>
+
+    <div><h:link value="&#8592; Start page" outcome="start" styleClass="page_link" /></div>
 
     <h:outputScript library="js" name="header.js"/>
     <h:outputScript library="js" name="graph_drawer.js"/>
     <h:outputScript library="js" name="form.js"/>
+    <h:panelGroup id="graph">
+        <h:outputScript>
+            redrawPoints(JSON.parse('#{results.getJsonResults()}'));
+        </h:outputScript>
+    </h:panelGroup>
+
+
 </h:body>
 </html>

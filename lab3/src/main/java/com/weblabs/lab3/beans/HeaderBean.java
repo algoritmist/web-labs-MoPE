@@ -1,4 +1,4 @@
-package com.weblabs.lab3;
+package com.weblabs.lab3.beans;
 
 import java.io.Serializable;
 

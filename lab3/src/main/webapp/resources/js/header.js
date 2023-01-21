@@ -13,7 +13,7 @@ function changeInfoDisplay() {
 function updateDateTime() {
 	let datetime = document.getElementsByClassName("datetime");
 	for (let i = 0; i < datetime.length; i++) {
-		datetime.item(i).innerHTML = Date();
+		datetime.item(i).innerHTML = Date().toLowerCase();
 	}
 }
 
