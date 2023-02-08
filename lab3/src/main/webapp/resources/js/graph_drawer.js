@@ -15,6 +15,10 @@ const Y_MIDDLE = 110;
 const R = 100;
 const X_AXIS_OFFSET = 5;
 const Y_AXIS_OFFSET = 5;
+const WIDTH = 220;
+const HEIGHT = 220;
+
+const POINT_RADIUS = 3;
 
 const X_VALUE_LEFT_BORDER = -5;
 const X_VALUE_RIGHT_BORDER = 3;
@@ -28,7 +32,7 @@ function drawAxis() {
     ctx.strokeStyle = "black";
 
     ctx.moveTo(TOP_GRAPH_BORDER - X_AXIS_OFFSET, Y_MIDDLE);
-    ctx.lineTo( BOTTOM_GRAPH_BORDER + X_AXIS_OFFSET, Y_MIDDLE);
+    ctx.lineTo(BOTTOM_GRAPH_BORDER + X_AXIS_OFFSET, Y_MIDDLE);
     ctx.stroke();
 
     ctx.moveTo(X_MIDDLE, LEFT_GRAPH_BORDER - Y_AXIS_OFFSET);
@@ -156,13 +160,17 @@ function calculateResult(x, y, r) {
 
 function drawPoint(x, y, r1, result) {
     // x, y are graph coordinates, not canvas coordinates
-    console.log(x,y,r1);
     if (typeof r !== "undefined") {
         r1 = r;
     }
-    console.log(x,y,r1);
     let xCoord = ((x + r1)/ r1) * 100 + LEFT_GRAPH_BORDER;
     let yCoord = 200 - ((y + r1) / r1) * 100 + TOP_GRAPH_BORDER;
+
+    if (xCoord > WIDTH - POINT_RADIUS || xCoord < POINT_RADIUS ||
+        yCoord > HEIGHT - POINT_RADIUS || yCoord < POINT_RADIUS) {
+        return;
+    }
+
     result = calculateResult(x, y, r1);
 
     ctx.beginPath()
@@ -179,7 +187,6 @@ function drawPoints(points) {
 }
 
 function redrawPoints(points) {
-    //selectR();
     if (r !== "undefined") {
         ctx.clearRect(0, 0, 220, 220);
         drawGraph();
@@ -195,12 +202,8 @@ function sendRequest(x, y, r) {
 }
 
 function handleClick(event) {
-    if (typeof r === "undefined") {
-        console.log("r undefined")
-        //showInvalidRequestWarning(true, "You must set R before interacting with graph");
-    } else {
+    if (typeof r !== "undefined") {
         getCoordinatesFromMouseClick(event);
-        console.log(x, y, r);
         sendRequest(x, y, r);
     }
 }

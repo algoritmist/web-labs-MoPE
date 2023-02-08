@@ -38,8 +38,9 @@ public class ResultsBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        //results = new ArrayList<>();
-        //results.addAll(entityManager.createQuery("SELECT a FROM attempt a", AttemptBean.class).getResultList());
+        /*
+        results = new ArrayList<>();
+        results.addAll(entityManager.createQuery("SELECT a FROM attempt a", AttemptBean.class).getResultList());*/
 
         connect();
         getData();
@@ -71,5 +72,9 @@ public class ResultsBean implements Serializable {
 
     public String getJsonResults() {
         return parser.toJson(results);
+    }
+
+    public double getLastR() {
+        return  (results.size() != 0) ? results.getLast().getR() : 1;
     }
 }

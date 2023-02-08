@@ -11,12 +11,11 @@ public class PointBean implements Serializable {
     int id;
     private double x, y, r = -25;
     private boolean result;
-    private String formattedCurrentTime;
+    private long currentTime;
     private long executionTime;
 
     private final PointValidator pointValidator =
             new PointValidator(-5, 5, -5, 5, 1, 5);
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     public double getR() {
         return r;
@@ -46,12 +45,12 @@ public class PointBean implements Serializable {
         return result;
     }
 
-    public String getFormattedCurrentTime() {
-        return formattedCurrentTime;
+    public long getCurrentTime() {
+        return currentTime;
     }
 
-    public void setFormattedCurrentTime(String formattedCurrentTime) {
-        this.formattedCurrentTime = formattedCurrentTime;
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
     }
 
     public long getExecutionTime() {
@@ -69,7 +68,7 @@ public class PointBean implements Serializable {
         }
         result = PointChecker.checkPoint(this);
         long end = System.nanoTime();
-        this.formattedCurrentTime = dateFormat.format(new Timestamp(System.currentTimeMillis()));
+        this.currentTime = System.currentTimeMillis();
         this.executionTime = end - start;
         return true;
     }

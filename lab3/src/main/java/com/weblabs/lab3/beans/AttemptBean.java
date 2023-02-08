@@ -4,6 +4,8 @@ import com.weblabs.lab3.beans.PointBean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 
 @Entity
 public class AttemptBean implements Serializable {
@@ -22,7 +24,7 @@ public class AttemptBean implements Serializable {
     @Column(nullable = false)
     private boolean result;
     @Column(name = "cur_time", nullable = false)
-    private String formattedCurrentTime;
+    private long currentTime;
     @Column(name = "exec_time", nullable = false)
     private long executionTime;
 
@@ -33,7 +35,7 @@ public class AttemptBean implements Serializable {
         this.y = point.getY();
         this.r = point.getR();
         this.result = point.getResult();
-        this.formattedCurrentTime = point.getFormattedCurrentTime();
+        this.currentTime = point.getCurrentTime();
         this.executionTime = point.getExecutionTime();
     }
 
@@ -65,12 +67,12 @@ public class AttemptBean implements Serializable {
         return result ? "hit" : "miss";
     }
 
-    public String getFormattedCurrentTime() {
-        return formattedCurrentTime;
+    public long getCurrentTime() {
+        return currentTime;
     }
 
-    public void setFormattedCurrentTime(String formattedCurrentTime) {
-        this.formattedCurrentTime = formattedCurrentTime;
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
     }
 
     public long getExecutionTime() {
@@ -79,5 +81,22 @@ public class AttemptBean implements Serializable {
 
     public void setExecutionTime(long executionTime) {
         this.executionTime = executionTime;
+    }
+
+    public String getFormattedValue(double value) {
+        DecimalFormat format = new DecimalFormat("0.#####");
+        return format.format(value);
+    }
+
+    public String getFormattedX() {
+        return getFormattedValue(x);
+    }
+
+    public String getFormattedY() {
+        return getFormattedValue(y);
+    }
+
+    public String getFormattedR() {
+        return getFormattedValue(r);
     }
 }

@@ -156,24 +156,9 @@ label.var_name {
 	display: none;
 }
 
-.page_link {
-	min-width: 60px;
-	min-height: 45px;
-	background-color: rgba(255, 255, 255, 0.9);
-	border-radius: 50%;
-	border: 1px solid white;
-	color: black;
-	display: flex;
-    text-decoration: none;
-	align-items: center;
-	justify-content: center;
-	margin-top: 10px;
-}
-
-.next_page_link > a {
+.page_link, .page_link > a {
 	text-decoration: none;
-	color: #b32638;
-	font-size: 25px;
+	color: black;
 }
 
 #result_wrapper {
@@ -184,8 +169,7 @@ label.var_name {
 	border-collapse: collapse;
 	margin-left: auto;
 	margin-right: auto;
-	table-layout: fixed;
-	mid-width: 80%;
+	table-layout: fixed;=
 }
 
 td {
