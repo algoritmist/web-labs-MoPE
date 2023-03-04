@@ -1,0 +1,47 @@
+<div class="info_container">
+    <div>
+        <label for="username" class="input_name">Username:</label><br *ngIf="isPhone()">
+        <input type="text" id="username" class="input_name" [formControl]="name">
+        <div class="warning" *ngIf="name.errors?.['required']">
+            Username is required.
+          </div>
+          <div class="warning" *ngIf="name.errors?.['minlength']">
+            Username must be at least 6 characters long.
+          </div>
+          <div class="warning" *ngIf="name.errors?.['maxlength']">
+            Username must be no more than 20 characters long.
+          </div>
+          <div class="warning" *ngIf="name.errors?.['pattern']">
+            Username must start with an English letter and contain English letters and numbers only.
+          </div>
+    </div>
+
+    <div>
+        <label for="password" class="input_name">Password:</label><br *ngIf="isPhone()">
+        <input type="password" id="password" [formControl]="password">
+
+        <div class="warning" *ngIf="password.errors?.['required']">
+            Password is required.
+          </div>
+          <div class="warning" *ngIf="password.errors?.['minlength']">
+            Password must be at least 4 characters long.
+          </div>
+          <div class="warning" *ngIf="password.errors?.['maxlength']">
+            Password must be no more than 20 characters long.
+          </div>
+          <div class="warning" *ngIf="password.errors?.['pattern']">
+            Password must contain English letters and numbers only.
+          </div>
+    </div>
+
+    <div>
+      <button class="submit_button" (click)="authorize()">Authorize</button>
+      <button class="submit_button" (click)="register()">Register</button>
+    </div>
+
+    
+</div>
+
+<div *ngIf="isWarningPresent()" class="info_container warning">
+  {{warning}}
+</div>
