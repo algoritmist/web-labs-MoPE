@@ -3,3 +3,4 @@ wildfly-19
 */target
 */lib
 */hibernate.cfg.xml
+.idea

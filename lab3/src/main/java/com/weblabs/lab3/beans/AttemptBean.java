@@ -50,6 +50,9 @@ public class AttemptBean implements Serializable {
     public double getY() {
         return y;
     }
+    public boolean getResult() {
+        return result;
+    }
 
     public void setX(double x) {
         this.x = x;

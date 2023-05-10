@@ -75,6 +75,6 @@ public class ResultsBean implements Serializable {
     }
 
     public double getLastR() {
-        return  (results.size() != 0) ? results.getLast().getR() : 1;
+        return (results.size() != 0) ? results.getLast().getR() : 1;
     }
 }

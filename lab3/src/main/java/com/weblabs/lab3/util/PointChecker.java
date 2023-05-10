@@ -22,7 +22,7 @@ public class PointChecker {
         return (x*x + y*y <= r/2);
     }
 
-    private static boolean checkPoint(double x, double y, double r) {
+    public static boolean checkPoint(double x, double y, double r) {
         return checkFirstQuarter(x, y, r) || checkSecondQuarter(x, y, r) || checkThirdQuarter(x, y, r) || checkFourthQuarter(x, y, r);
     }
 

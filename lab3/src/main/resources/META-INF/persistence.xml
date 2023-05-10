@@ -16,4 +16,7 @@
         </properties>
 
     </persistence-unit>
+    <!--<persistence-unit name="test">
+        <provider
+    </persistence-unit>-->
 </persistence>

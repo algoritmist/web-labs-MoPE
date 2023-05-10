@@ -72,4 +72,20 @@ public class PointBean implements Serializable {
         this.executionTime = end - start;
         return true;
     }
+
+    public PointBean(){}
+    public PointBean(double x, double y, double r){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof PointBean)){
+            return false;
+        }
+        PointBean p = (PointBean) other;
+        return this.x == p.x && this.y == p.y && this.r == p.r;
+    }
 }
