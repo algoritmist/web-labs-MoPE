@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Lab3" basedir="." default="build">
+    <property file="build.properties"/>
+    <target name="compile" description="компиляция исходных кодов проекта">
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}"/>
+    </target>
+    <target name="build" depends="compile"
+            description="компиляция исходных кодов проекта и их упаковка в исполняемый jar-архив">
+        <mkdir dir="${build.jar.dir}"/>
+        <jar destfile="${build.jar.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${ant.project.main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="clean" description="удаление скомпилированных классов проекта и всех временных файлов">
+        <delete dir="${build.dir}"/>
+    </target>
+    <target name="test" depends="build"
+            description="запуск junit-тестов проекта. Перед запуском тестов необходимо осуществить сборку проекта">
+        <mkdir dir="test.report.dir"/>
+        <junit printsummary="yes">
+            <!-- add haltonerror to stop build if fail-->
+            <test name="test.class" todir="test.report.dir" outfile="test.class"/>
+        </junit>
+    </target>
+    <target name="scp" depends="build"
+            description="перемещение собранного проекта по scp на выбранный сервер по завершению сборки">
+
+    </target>
+    <target name="xml" description="валидация всех xml-файлов в проекте">
+
+    </target>
+    <target name="doc" description="преобразование native2ascii для копий файлов локализации">
+
+    </target>
+    <target name="native2ascii">
+
+    </target>
+    <target name="history" description="загружается первая успешная версия из git">
+
+    </target>
+    <target name="diff"
+            description="осуществляет проверку состояния рабочей копии, и, если изменения не касаются классов, указанных в файле параметров выполняет commit в репозиторий svn">
+
+    </target>
+    <target name="team" depends="build"
+            description="осуществляет получение из svn-репозитория 3 предыдущих ревизий, их сборку (по аналогии с основной) и упаковку получившихся jar-файлов в zip-архив">
+
+    </target>
+    <target name="alt" depends="build"
+            description="оздаёт альтернативную версию программы с измененными именами переменных и классов (используя задание replace/replaceregexp в файлах параметров) и упаковывает её в jar-архив.">
+
+    </target>
+</project>
