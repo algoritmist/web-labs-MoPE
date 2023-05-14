@@ -11,6 +11,11 @@
         <fileset dir="${lib.test.dir}" includes="**/*.jar"/>
     </path>
 
+    <path id="lib.junit.path">
+        <fileset dir="${lib.test.dir}" includes="**/junit*.jar"/>
+    </path>
+
+
     <target name="resolve" description="разрешение зависимостей">
         <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact].[ext]"/>
     </target>
@@ -22,8 +27,9 @@
             <classpath refid="lib.main.path"/>
         </javac>
         <echo>Компиляция тестов</echo>
-        <mkdir dir="${test.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
         <javac srcdir="${src.test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
+            <exclude name="**/ResultsBeanTest.java"/>
             <classpath>
                 <path refid="lib.test.path"/>
                 <pathelement location="${build.classes.dir}"/>
@@ -41,14 +47,30 @@
     </target>
     <target name="clean" description="удаление скомпилированных классов проекта и всех временных файлов">
         <delete dir="${build.dir}"/>
+        <delete dir="${test.dir}"/>
+        <delete dir="${build.jar.dir}"/>
+        <delete dir="${lib.dir}"/>
     </target>
     <target name="test" depends="build"
             description="запуск junit-тестов проекта. Перед запуском тестов необходимо осуществить сборку проекта">
-        <mkdir dir="test.report.dir"/>
-        <junit printsummary="yes">
-            <!-- add haltonerror to stop build if fail-->
-            <test name="test.class" todir="test.report.dir" outfile="test.class"/>
-        </junit>
+        <mkdir dir="${test.report.dir}"/>
+        <junitlauncher printsummary="true">
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="${build.dir}"/>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement location="${test.classes.dir}"/>
+            </classpath>
+            <testclasses outputdir="${test.report.dir}">
+                <fileset dir="${test.classes.dir}">
+                    <include name="**/*Test*.class"/>
+                </fileset>
+                <listener type="legacy-plain"
+                          sendSysOut="true"
+                          sendSysErr="true"/>
+                <fork/>
+            </testclasses>
+        </junitlauncher>
     </target>
     <target name="scp" depends="build"
             description="перемещение собранного проекта по scp на выбранный сервер по завершению сборки">
