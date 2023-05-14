@@ -93,7 +93,11 @@
              trust="true"/>
     </target>
     <target name="xml" description="валидация всех xml-файлов в проекте">
-
+        <echo>Валидация XML-файлов</echo>
+        <xmlvalidate lenient="yes" warn="yes">
+            <fileset dir="." includes="**/*.xml"/>
+        </xmlvalidate>
+        <echo>Валидация прошла успешно</echo>
     </target>
     <target name="doc" description="преобразование native2ascii для копий файлов локализации">
 
