@@ -33,7 +33,7 @@
     <target name="build" depends="compile"
             description="компиляция исходных кодов проекта и их упаковка в исполняемый jar-архив">
         <mkdir dir="${build.jar.dir}"/>
-        <jar destfile="${build.jar.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}">
+        <jar destfile="${build.jar.dir}/${ant.project.jarname}.jar" basedir="${build.classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${ant.project.main-class}"/>
             </manifest>

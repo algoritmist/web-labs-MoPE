@@ -4,3 +4,5 @@ wildfly-19
 */lib
 */hibernate.cfg.xml
 .idea
+build_temp.xml
+build.properties
