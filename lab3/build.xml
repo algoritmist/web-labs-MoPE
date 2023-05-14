@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="${ant.project.name}" basedir="." default="resolve" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="${ant.project.name}" basedir="." default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
     <property file="build.properties"/>
 
     <path id="lib.main.path">
@@ -12,19 +12,22 @@
     </path>
 
     <target name="resolve" description="разрешение зависимостей">
-        <ivy:retrieve pattern="${ivy.lib.dir}/[conf]/[artifact].[ext]"/>
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact].[ext]"/>
     </target>
 
-    <target name="compile" description="компиляция исходных кодов проекта">
+    <target name="compile" depends="resolve" description="компиляция исходных кодов проекта">
         <echo>Компиляция основного кода...</echo>
         <mkdir dir="${build.classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${build.classes.dir}">
+        <javac srcdir="${src.main.dir}" destdir="${build.classes.dir}" includeantruntime="false">
             <classpath refid="lib.main.path"/>
         </javac>
         <echo>Компиляция тестов</echo>
         <mkdir dir="${test.dir}"/>
-        <javac srcdir="${src.test.dir}" destdir="${test.dir}">
-            <classpath refid="lib.test.path"/>
+        <javac srcdir="${src.test.dir}" destdir="${test.classes.dir}" includeantruntime="false">
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="${build.classes.dir}"/>
+            </classpath>
         </javac>
     </target>
     <target name="build" depends="compile"
