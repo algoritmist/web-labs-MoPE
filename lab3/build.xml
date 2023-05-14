@@ -15,6 +15,7 @@
         <fileset dir="${lib.test.dir}" includes="**/junit*.jar"/>
     </path>
 
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
     <target name="resolve" description="разрешение зависимостей">
         <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact].[ext]"/>
@@ -39,6 +40,7 @@
     <target name="build" depends="compile"
             description="компиляция исходных кодов проекта и их упаковка в исполняемый jar-архив">
         <mkdir dir="${build.jar.dir}"/>
+        <echo>Упаковка в jar архив...</echo>
         <jar destfile="${build.jar.dir}/${ant.project.jarname}.jar" basedir="${build.classes.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${ant.project.main-class}"/>
@@ -46,14 +48,19 @@
         </jar>
     </target>
     <target name="clean" description="удаление скомпилированных классов проекта и всех временных файлов">
+        <echo>Удаление директории с классами...</echo>
         <delete dir="${build.dir}"/>
+        <echo>Удаление директории с тестами...</echo>
         <delete dir="${test.dir}"/>
+        <echo>Удаление архивов...</echo>
         <delete dir="${build.jar.dir}"/>
+        <echo>Удаление зависимостей...</echo>
         <delete dir="${lib.dir}"/>
     </target>
     <target name="test" depends="build"
             description="запуск junit-тестов проекта. Перед запуском тестов необходимо осуществить сборку проекта">
         <mkdir dir="${test.report.dir}"/>
+        <echo>Запуск тестов...</echo>
         <junitlauncher printsummary="true">
             <classpath>
                 <path refid="lib.test.path"/>
@@ -75,6 +82,15 @@
     <target name="scp" depends="build"
             description="перемещение собранного проекта по scp на выбранный сервер по завершению сборки">
 
+        <input message="Введите пароль для отправки на сервер: " addproperty="scp.password">
+            <handler type="secure"/>
+        </input>
+        <echo>Архив копируется на удаленный сервер...</echo>
+        <scp file="${build.jar.dir}/${ant.project.jarname}.jar"
+             todir="${scp.user}@${scp.host}:${scp.dir}"
+             password="${scp.password}"
+             port="${scp.port}"
+             trust="true"/>
     </target>
     <target name="xml" description="валидация всех xml-файлов в проекте">
 

@@ -102,7 +102,7 @@
         <delete dir="${build.dir}"/>
         <echo>Удаление директории с тестами...</echo>
         <delete dir="${test.dir}"/>
-        <echo>Удаление директории с документами...</echo>
+        <echo>Удаление директории с тестами...</echo>
         <delete dir="${doc.dir}"/>
         <echo>Удаление директории с native2ascii ресурсами...</echo>
         <delete dir="${native2ascii.resources}"/>
