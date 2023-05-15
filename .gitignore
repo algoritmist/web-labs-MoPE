@@ -6,3 +6,4 @@ wildfly-19
 .idea
 build_temp.xml
 build.properties
+subversion

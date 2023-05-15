@@ -99,14 +99,32 @@
         </xmlvalidate>
         <echo>Валидация прошла успешно</echo>
     </target>
-    <target name="doc" description="преобразование native2ascii для копий файлов локализации">
-
-    </target>
-    <target name="native2ascii">
+    <target name="native2ascii" description="преобразование native2ascii для копий файлов локализации">
 
     </target>
     <target name="history" description="загружается первая успешная версия из git">
-
+        <trycatch>
+            <try>
+                <runtarget target="compile"/>
+                <echo>Компиляция завершена...</echo>
+            </try>
+            <catch>
+                <exec executable="git" outpudproperty="git_commit_count">
+                    <arg line="rev-list master --all HEAD"/>
+                </exec>
+                <if>
+                    <not>
+                        <equals arg1="${git_commit_count}" arg2="0"/>
+                    </not>
+                    <then>
+                        <exec executable="git">
+                            <arg line="checkout HEAD~1"/>
+                        </exec>
+                        <runtarget target="history"/>
+                    </then>
+                </if>
+            </catch>
+        </trycatch>
     </target>
     <target name="diff"
             description="осуществляет проверку состояния рабочей копии, и, если изменения не касаются классов, указанных в файле параметров выполняет commit в репозиторий svn">
