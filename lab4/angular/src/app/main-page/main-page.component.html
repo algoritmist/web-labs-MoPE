@@ -1,0 +1,13 @@
+<div class="page">
+    <app-header></app-header>
+    <div [class.row]="isDesktop()">
+      <div [class.column]="isDesktop()">
+        <button class="submit_button" [routerLink]="['auth']" (click)="logout()">Logout</button>
+        <app-graph [r]="r_value" [points]="points"  (addPoint)="onAddPoint($event)"></app-graph>
+      </div>
+      <div [class.column]="isDesktop()">
+        <app-main-form (onRChange)="changeR($event)" ($points)="updatePoints($event)"></app-main-form>
+      </div>
+    </div>
+    <app-results-table [points]="points"></app-results-table>
+</div>

@@ -1,0 +1,45 @@
+<div class="info_container">
+    <div>
+        <div><label for="x" class="input_name">X:</label></div>
+        <!-- однажды девочка спросила у мамы можно ли ей хоть один вариант с нормальными инпутами. плакали всей маршруткой. а сегодня у нас опять чекбоксы -->
+
+        <div [class.checkbox_container]="!isPhone()" [class.column]="isPhone()">
+            <div *ngFor="let x_checkbox of x_values" class="checkbox_wrapper">
+            <input type="checkbox" class="x_checkbox" [checked]="x === x_checkbox" value="{{x_checkbox}}" (change)="selectX($event)">
+            <label>{{x_checkbox}}</label>
+            </div>
+        </div>
+
+        <div class="warning" id="x_warning">X is not selected.</div>
+    </div>
+    
+    <div>
+        <label for="Y" class="input_name">Y:</label><br *ngIf="isPhone()">
+        <input type="text" maxlength="10" id="Y" [formControl]="y" />
+
+        <div class="warning" *ngIf="y.errors?.['required']">
+          Y is not selected.
+        </div>
+        <div class="warning" *ngIf="y.errors?.['invalidNumber']">
+          Y must be a number between -3 and 3 (non-inclusive).
+        </div>
+        
+    </div>
+
+    <div>
+        <div><label for="r" class="input_name">R:</label></div>
+
+        <div [class.checkbox_container]="!isPhone()" [class.column]="isPhone()">
+            <div *ngFor="let r_checkbox of r_values" class="checkbox_wrapper">
+            <input type="checkbox" class="r_checkbox" [checked]="r === r_checkbox" value="{{r_checkbox}}" (change)="selectR($event)">
+            <label>{{r_checkbox}}</label>
+            </div>
+        </div>
+
+        <div class="warning" id="r_warning">R is not selected.</div>
+    </div>
+
+    <button class="submit_button" (click)="submit()">Send</button>
+
+    <div *ngIf="isWarningPresent()" class="info_container warning">{{warning}}</div>
+</div>

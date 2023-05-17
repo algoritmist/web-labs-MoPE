@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${ant.project.jarname}" default="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property file="build.properties"/>
+
+    <path id="lib.main.path">
+        <fileset dir="target/lib/main" includes="**/*.jar"/>
+    </path>
+
+    <path id="lib.test.path">
+        <path refid="lib.main.path"/>
+        <fileset dir="target/lib/test" includes="**/*.jar"/>
+    </path>
+
+    <path id="lib.junit.path">
+        <fileset dir="target/lib/test" includes="**/junit*.jar"/>
+    </path>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+    <target name="resolve" description="разрешение зависимостей">
+        <ivy:retrieve pattern="${lib.dir}/[conf]/[artifact].[ext]"/>
+    </target>
+
+    <target name="compile" depends="resolve" description="компиляция исходных кодов проекта">
+        <property name="srcdir" value="${src.main.dir}"/>
+        <echo>Компиляция основного кода...</echo>
+        <mkdir dir="${build.classes.dir}"/>
+        <javac srcdir="${srcdir}" destdir="target/build/classes" includeantruntime="false">
+            <classpath refid="lib.main.path"/>
+        </javac>
+        <echo>Компиляция тестов</echo>
+        <mkdir dir="${test.classes.dir}"/>
+        <javac srcdir="${src.test.dir}" destdir="target/tests/classes" includeantruntime="false">
+            <exclude name="**/ResultsBeanTest.java"/>
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="target/build/classes"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="build" depends="compile"
+            description="компиляция исходных кодов проекта и их упаковка в исполняемый jar-архив">
+        <svn-revisions outputproperty="revisions"/>
+        <property name="revision" value="${revisions}"/>
+        <property name="version" value="main"/>
+        <mkdir dir="${build.jar.dir}"/>
+        <echo>Упаковка в jar архив...</echo>
+        <jar destfile="${build.jar.dir}/lab3_r${revision}-${version}.jar" basedir="${build.classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${ant.project.main-class}"/>
+                <attribute name="Version" value="${revision}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="clean" description="удаление скомпилированных классов проекта и всех временных файлов">
+        <echo>Удаление директории с классами...</echo>
+        <delete dir="target/build"/>
+        <echo>Удаление директории с тестами...</echo>
+        <delete dir="target/tests"/>
+        <echo>Удаление архивов...</echo>
+        <delete dir="target/build/jar"/>
+        <echo>Удаление зависимостей...</echo>
+        <delete dir="target/lib"/>
+    </target>
+    <target name="test" depends="build"
+            description="запуск junit-тестов проекта. Перед запуском тестов необходимо осуществить сборку проекта">
+        <mkdir dir="target/tests/reports"/>
+        <echo>Запуск тестов...</echo>
+        <junitlauncher printsummary="true">
+            <classpath>
+                <path refid="lib.test.path"/>
+                <pathelement location="target/build"/>
+                <pathelement location="target/build/classes"/>
+                <pathelement location="target/tests/classes"/>
+            </classpath>
+            <testclasses outputdir="${test.report.dir}">
+                <fileset dir="target/tests/classes">
+                    <include name="**/*Test*.class"/>
+                </fileset>
+                <listener type="legacy-plain"
+                          sendSysOut="true"
+                          sendSysErr="true"/>
+                <fork/>
+            </testclasses>
+        </junitlauncher>
+    </target>
+    <target name="scp" depends="build"
+            description="перемещение собранного проекта по scp на выбранный сервер по завершению сборки">
+
+        <input message="Введите пароль для отправки на сервер: " addproperty="scp.password">
+            <handler type="secure"/>
+        </input>
+        <echo>Архив копируется на удаленный сервер...</echo>
+        <scp file="${build.jar.dir}/${ant.project.jarname}.jar"
+             todir="${scp.user}@${scp.host}:${scp.dir}"
+             password="${scp.password}"
+             port="${scp.port}"
+             trust="true"/>
+    </target>
+    <target name="xml" description="валидация всех xml-файлов в проекте">
+        <echo>Валидация XML-файлов</echo>
+        <xmlvalidate lenient="yes" warn="yes">
+            <fileset dir="." includes="**/*.xml"/>
+        </xmlvalidate>
+        <echo>Валидация прошла успешно</echo>
+    </target>
+
+    <target name="doc" depends="build"
+            description="Генерация javadoc и добавление в MANIFEST.MF MD5 и SHA-1 файлов проекта">
+        <mkdir dir="${doc.dir}"/>
+        <mkdir dir="keys"/>
+        <echo>Генерация хешей...</echo>
+        <signjar jar="${build.jar.dir}/lab3_r${revision}-${version}.jar" keystore="keys"
+                 storepass="apacheant" alias="weblab" sigalg="MD5withRSA" digestalg="SHA512"/>
+        <echo>Генерация javadoc...</echo>
+        <javadoc destdir="${doc.dir}"
+                 author="true"
+                 version="true"
+                 use="true">
+            <classpath refid="lib.main.path"/>
+            <fileset dir="${src.main.dir}"/>
+        </javadoc>
+
+        <echo>Сборка jar-архива с javadoc...</echo>
+        <jar destfile="${doc.dir}/JavaDoc.jar"
+             basedir="${doc.dir}"
+             update="true">
+        </jar>
+    </target>
+
+    <target name="native2ascii" description="преобразование native2ascii для копий файлов локализации">
+        <native2ascii src="${src.l18n.dir}"
+                      dest="${native2ascii.resources}"
+                      includes="**/*.properties"/>
+    </target>
+    <target name="history" description="загружается первая успешная версия из git">
+        <trycatch>
+            <try>
+                <runtarget target="compile"/>
+                <echo>Компиляция завершена...</echo>
+            </try>
+            <catch>
+                <exec executable="git" outputproperty="git_commit_count">
+                    <arg line="rev-list master --all HEAD"/>
+                </exec>
+                <if>
+                    <not>
+                        <equals arg1="${git_commit_count}" arg2="0"/>
+                    </not>
+                    <then>
+                        <exec executable="git">
+                            <arg line="checkout HEAD~1"/>
+                        </exec>
+                        <runtarget target="history"/>
+                    </then>
+                </if>
+            </catch>
+        </trycatch>
+    </target>
+
+    <macrodef name="svn-status" description="Вывод состояния файлов рабочей копии">
+        <attribute name="outputproperty"/>
+        <sequential>
+            <exec executable="svn" outputproperty="@{outputproperty}">
+                <arg value="status"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="svn-commit" description="Добавление файлов и совершение коммита в репозиторий svn">
+        <sequential>
+            <exec executable="svn">
+                <arg value="add"/>
+                <arg value="."/>
+                <arg value="--force"/>
+            </exec>
+
+            <input message="Введите сообщение коммита: "
+                   addproperty="commit.message"/>
+
+            <exec executable="svn">
+                <arg value="commit"/>
+                <arg value="-m"/>
+                <arg value="${commit.message}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="diff"
+            description="Совершение коммита в репозиторий svn, если изменения не касаются указанных классов">
+        <echo>Получение списка измененных файлов...</echo>
+        <svn-status outputproperty="diff.status"/>
+        <echo>Поиск изменений в указанных классах...</echo>
+        <for param="class" list="${diff.classes}" delimiter=" ">
+            <sequential>
+                <condition property="commit">
+                    <not>
+                        <contains string="${diff.status}"
+                                  substring="@{class}.java"/>
+                    </not>
+                </condition>
+            </sequential>
+        </for>
+        <if>
+            <isset property="commit"/>
+            <then>
+                <echo>Изменения не были найдены: выполнение коммита...</echo>
+                <svn-commit/>
+            </then>
+            <else>
+                <echo>Изменения были найдены: завершение...</echo>
+            </else>
+        </if>
+    </target>
+
+    <target name="team"
+            description="осуществляет получение из svn-репозитория 3 предыдущих ревизий, их сборку (по аналогии с основной) и упаковку получившихся jar-файлов в zip-архив">
+
+        <mkdir dir="${svn.temp.dir}"/>
+
+        <foreach param="iteration" list="0,1,2" target="team_unit"/>
+        <zip destfile="team.zip" basedir="${svn.temp.dir}" includes="**/*.jar"/>
+        <delete dir="${svn.temp.dir}"/>
+    </target>
+
+    <macrodef name="svn-revisions">
+        <attribute name="outputproperty"/>
+        <sequential>
+            <exec executable="svn" outputproperty="@{outputproperty}">
+                <arg line="info --show-item revision ${svn.repository}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+
+    <target name="team_unit">
+        <svn-revisions outputproperty="revisions"/>
+        <math result="revision" operand1="${revisions}" operand2="${iteration}" operation="-" datatype="int"/>
+        <exec executable="svn">
+            <arg line="checkout -r${revision} ${svn.repository} ${svn.working.copy}"/>
+        </exec>
+
+        <antcall target="build">
+            <param name="revision" value="${revision}"/>
+        </antcall>
+
+        <copy todir="${svn.temp.dir}">
+            <fileset dir="${build.jar.dir}" includes="**/*.jar"/>
+        </copy>
+    </target>
+
+    <target name="alt"
+            description="Создание версии программы с измененными именами переменных и классов по указанному регулярному выражению">
+        <echo>Создание временной директории и копирование исходных файлов...</echo>
+        <mkdir dir="${temp.dir}"/>
+        <copy todir="${temp.dir}">
+            <fileset dir="${src.main.dir}" includes="**/*.java"/>
+        </copy>
+
+        <echo>Изменение имен переменных и классов в соответствии с регулярным выражением...</echo>
+        <replaceregexp match="${alt.regex}"
+                       flags="${alt.regex.flags}"
+                       replace="${alt.replace}">
+            <fileset dir="${temp.dir}" includes="**/*.java"/>
+        </replaceregexp>
+
+        <echo>Сборка jar-архива с альтернативной версией программы...</echo>
+        <antcall target="compile">
+            <param name="srcdir" value="${temp.dir}"/>
+        </antcall>
+        <antcall target="build">
+            <param name="version" value="alt"/>
+        </antcall>
+        <!-- <delete dir="${temp.dir}"/>-->
+    </target>
+    <target name="run" depends="build">
+        <svn-revisions outputproperty="revision"/>
+        <java jar="${build.jar.dir}/${ant.project.jarname}_r${revision}-main.jar" fork="true"/>
+    </target>
+</project>

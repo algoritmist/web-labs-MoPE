@@ -1,0 +1,14 @@
+div.checkbox_wrapper {
+    display: inline;
+    padding: 7px;
+    font-size: 17px;
+}
+
+div.checkbox_container {
+    display: inline;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}

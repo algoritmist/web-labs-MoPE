@@ -1,0 +1,9 @@
+*/.idea
+wildfly-19
+*/target
+*/lib
+*/hibernate.cfg.xml
+.idea
+build_temp.xml
+build.properties
+*/subversion

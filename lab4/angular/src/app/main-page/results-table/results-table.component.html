@@ -1,0 +1,20 @@
+<div id="result_wrapper">
+    <table id="results_table">
+         <tr class="header">
+            <td>X</td>
+            <td>Y</td>
+            <td>R</td>
+            <td>Result</td>
+            <td *ngIf="!isPhone()">Current time</td>
+            <td *ngIf="!isPhone()">Execution time</td>
+        </tr>
+        <tr *ngFor="let p of points" [class]="resultToString(p)">
+            <td>{{p.x}}</td>
+            <td>{{p.y}}</td>
+            <td>{{p.r}}</td>
+            <td>{{resultToString(p)}}</td>
+            <td *ngIf="!isPhone()">{{convertTimestamp(p.curTime)}}</td>
+            <td *ngIf="!isPhone()">{{p.execTime}} ns</td>
+        </tr>
+    </table>
+</div>
